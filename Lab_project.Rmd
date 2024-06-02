@@ -4,9 +4,9 @@ date: "`r Sys.Date()`"
 output: github_document
 ---
 
-**Student Name:<insert your name here>**
+**Student Name:<" hadi-alshammari ">**
 
-**Student ID:<insert ID here>**
+**Student ID:<2210002975>**
 
 
 **Deadline:** 23:59 on Sunday, 19 May 2024
@@ -21,6 +21,7 @@ output: github_document
 library(tidyverse)
 library(openintro)
 library(ggrepel)
+library(dplyr)
 ```
 
 
@@ -28,7 +29,8 @@ library(ggrepel)
 
 `1. (2 points)
 ```{r}
-
+seattlepets %>%
+distinct (species)
 ```
 Write your narrative here
 
@@ -38,7 +40,8 @@ Write your narrative here
 `2. (2 points)
 
 ```{r}
-
+seattlepets %>%
+  ncol()
 ```
 Write your narrative below
 
@@ -46,21 +49,27 @@ Write your narrative below
 
 `3. (2 points)
 ```{r}
-
+seattlepets %>%
+select (species) %>%
+  count(species , sort = TRUE)
 ```
 Write your narrative here
 
 
 `4. (2 points)
 ```{r}
-
+seattlepets %>% 
+  select(animal_name) %>%
+  count(animal_name , sort = TRUE)
 ```
 Write your narrative here
 
 
 `5. (2 points)
 ```{r}
-
+seattlepets %>%
+filter(species == "Pig") %>%
+  arrange(animal_name)
 ```
 Write your narrative here
 
@@ -69,8 +78,12 @@ Write your narrative here
 
 `6. (2 points)
 ```{r}
-
-```
+seattlepets %>%
+  filter(species == "Goat") %>%
+  select(animal_name , primary_breed) %>%
+  arrange(animal_name)
+  
+``` 
 Write your narrative here
 
 
@@ -79,6 +92,10 @@ Write your narrative here
 
 `7. (2 points)
 ```{r}
+seattlepets %>%
+  mutate(pet = animal_name , species) %>%
+  select(license_number , pet) %>%
+  arrange(pet)
 
 ```
 Write your narrative here
@@ -87,7 +104,8 @@ Write your narrative here
 
 `8. (2 points)
 ```{r}
-
+ggplot(seattlepets,aes(x=species))+
+  geom_bar();
 ```
 Write your narrative here
 
@@ -103,11 +121,20 @@ top_10_names
 ```
 `a.	What does the above code chunk do?
 
-
+**display a New column as "top_10_names" contains the top 10 name**
 
 `b. Plot the counts of the pet names (animal_name) in top_10_names
-```{r}
 
+```{r}
+ seattlepets %>%
+  filter(animal_name %in% c( "Lucy"  , "Charlie" , "Luna" , "Bella" , "Max"    , 
+                           "Daisy" , "Molly"   , "Jack" , "Lily"  , "Stella" )) %>%
+  ggplot(aes(animal_name , 
+             fill = species)) + 
+  geom_bar()
+
+
+  
 ```
 
 
@@ -167,9 +194,12 @@ ggplot(comb_name_props, aes(x = cat_prop, y = dog_prop)) +
 
 `Answer here..................
 
+**Names that are more common for cats than dogs are the ones below the line. This is because the diagonal line represents equal popularity (x = y). If a name's point is below this line, it means the proportion of cats with that name (x-axis) is greater than the proportion of dogs with that name (y-axis).**
 
 
 `Is the relationship between the two variables (proportion of cats with a given name and proportion of dogs with a given name) positive or negative? What does this mean in context of the data?
 
 `Answer here .............
 
+
+**The relationship between the two variables is positive. This means that as the proportion of cats with a given name increases, the proportion of dogs with the same name also tends to increase. In the context of the data, this indicates that names popular for one species (cats) are also likely to be popular for the other species (dogs). There is a shared trend in naming preferences between cat and dog owners.**
